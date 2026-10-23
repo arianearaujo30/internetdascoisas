@@ -1,60 +1,61 @@
-import customtkinter as ctk
+import customtkinter  as ctk
+import qrcode
+from PIL import Image,ImageTk
+
 ctk.set_appearance_mode('dark')
-
-
-#janela ---------
+#janela ------------
 janela = ctk.CTk()
-janela.geometry('500x500')
-janela.title('Sistema de Acesso-2026')
-janela.iconbitmap('cslogin_104358.ico')
+janela.geometry('400x500')
+janela.title('Sistema Gerador de QRCODE')
+janela.resizable(False,False)
+#-------------------------
 
-#------------------------------------
+imagem_qr = None
 
-# corpo da janela --------------------------------
+def gerar_qrcode():
+    global imagem_qr
+    texto= entrada.get()
+    
+    if(texto !=''):
+        qr= qrcode.make(texto)
+        qr= qr.resize((300,300))
+        imagem_qr= ImageTk.PhotoImage(qr)
+        resultado.configure(image=imagem_qr,text='')
+    else:
+        resultado.configure(text='Digite um texto ou um PIX')
 
+
+# Elementos da Janela -------------------
 titulo = ctk.CTkLabel(janela,
-    text='Sistema de login',
-    text_color='#8cc5e6',
-    font=('Arial',50)
-)
-titulo.pack()
+                    text='Sistema Gerador de Qrcode',
+                    text_color='yellow',
+                    font=('Arial',30))
+titulo.pack(pady=10)
 
 
-login=ctk.CTkEntry(janela,
-                width=400,
-                height=40,
-                border_color='#8cc5e6',
-                placeholder_text='Digite o seu Login')
-login.pack(pady=30)
-
-
-
-
-
-senha=ctk.CTkEntry(janela,
-                width=400,
-                height=40,
-                border_color='#8cc5e6',
-                placeholder_text='Digite a sua Senha',
-                show='•')
-senha.pack()
+entrada = ctk.CTkEntry(janela,
+                    width=300,
+                    height=40,
+                    placeholder_text='Digite a URL ou o PIX',
+                    border_color='yellow')
+entrada.pack(pady=10)
 
 botao = ctk.CTkButton(janela,
-                width= 200,
-                height=40,
-                text ='Acessar',
-                fg_color='#8cc5e6',
-                text_color='black',
-                cursor = 'spider',
-                font=('arial',30))
+                    width=100,
+                    height=20,
+                    fg_color='white',
+                    text='Gerar QrCode',
+                    text_color='black',
+                    hover_color='silver',
+                    cursor='hand2',
+                    command=gerar_qrcode)
+botao.pack(pady=10)
 
-botao.pack(pady=30)
-
-
-
+resultado = ctk.CTkLabel(janela,
+                        text='')
+resultado.pack(pady=20)
 
 
 
 
 janela.mainloop()
-
